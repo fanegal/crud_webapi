@@ -66,7 +66,6 @@ namespace Business
 
         }
 
-
         public void reagendar_actividad(int id_actividad, DateTime fechanew)
         {
             B_Property neg_prop;
@@ -117,7 +116,6 @@ namespace Business
 
         }
 
-
         public List<object> GetList()
         {
             List<object> result;
@@ -133,6 +131,31 @@ namespace Business
                 result = new List<object>();
             }
             return result;
+        }
+
+        public void cancelar_actividad(int id_actividad)
+        {
+            B_Property neg_prop;
+            entidades.Activity actividad;
+            try
+            {
+                actividad = data.getSingle(f => f.Id == id_actividad);
+                if (data.bit_error) { throw data.Error; }
+
+
+                actividad.UpdatedAt = DateTime.Now;
+                actividad.Status = "canceled";
+
+                data.sumit(actividad);
+                if (data.bit_error) { throw data.Error; }
+
+            }
+            catch (Exception ex)
+            {
+                bit_error = true;
+                error = ex;
+            }
+
         }
     }
 }

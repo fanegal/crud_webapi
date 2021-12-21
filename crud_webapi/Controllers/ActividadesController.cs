@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Business;
 using crud_webapi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -56,6 +54,35 @@ namespace crud_webapi.Controllers
             }
 
         }
+        [HttpPut("{id}")]
+        public object cancelar(int id)
+        {
+            B_Activity neg;
+            try
+            {
+                resultado result = new resultado();
+                neg = new B_Activity();
+                neg.cancelar_actividad(id);
+                if (neg.bit_error)
+                {
+                    result.bit_error = true;
+                    result.mensaje = neg.error.Message.ToString();
+                }
+                else
+                {
+                    result.bit_error = false;
+                    result.mensaje = "La actividad fue cancelada";
+
+                }
+
+                return result;
+            }
+            catch (Exception)
+            {
+                return NotFound();
+            }
+
+        }
 
         [HttpPut]
         public object reagendar_actividad(change_actividad item)
@@ -77,7 +104,8 @@ namespace crud_webapi.Controllers
                     else
                     {
                         result.bit_error = false;
-                        result.mensaje = "nueva_actividad registrada";
+                        result.mensaje = "La actividad fue reagendada";
+                      
 
                     }
                 }
@@ -93,7 +121,6 @@ namespace crud_webapi.Controllers
                 return NotFound();
             }
         }
-
 
         [HttpGet]
         public object getActividades()
