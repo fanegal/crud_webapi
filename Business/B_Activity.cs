@@ -124,6 +124,7 @@ namespace Business
             try
             {
                 data.getList(s => s.Schedule <= DateTime.Now.AddDays(14) && s.Schedule >= DateTime.Now.AddDays(-3)).ToList();
+                result = new List<object>();
             }
             catch (Exception ex)
             {
