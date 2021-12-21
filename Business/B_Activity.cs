@@ -116,13 +116,25 @@ namespace Business
 
         }
 
-        public List<object> GetList()
+        public IEnumerable<object> GetList(bool regla, string status, DateTime? inicio, DateTime? fin)
         {
             List<object> result;
             try
             {
-                data.getList(s => s.Schedule <= DateTime.Now.AddDays(14) && s.Schedule >= DateTime.Now.AddDays(-3)).ToList();
-                result = new List<object>();
+                if (regla)
+                {
+                    result = data.getListEspecial_regla().ToList();
+                }
+                else if (!string.IsNullOrEmpty(status))
+                {
+                    result = data.getListEspecial_status(status).ToList();
+                }
+                else
+                {
+                    result = data.getListEspecial_fechas(inicio.Value, fin.Value).ToList();
+                }
+
+                if (data.bit_error) { throw data.Error; }
             }
             catch (Exception ex)
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Business;
 using crud_webapi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -105,7 +106,7 @@ namespace crud_webapi.Controllers
                     {
                         result.bit_error = false;
                         result.mensaje = "La actividad fue reagendada";
-                      
+
 
                     }
                 }
@@ -123,18 +124,20 @@ namespace crud_webapi.Controllers
         }
 
         [HttpGet]
-        public object getActividades()
+        public IEnumerable<object> getActividades(lista_filtros filtros)
         {
+            IEnumerable<lista_filtros> result;
+            B_Activity neg;
             try
             {
-                resultado result = new resultado();
+                neg = new B_Activity();
+                var datos = neg.GetList(filtros.regla, filtros.status, filtros.fechainicio_calendario, filtros.fechafin_calendario);
 
-
-                return result;
+                return datos;
             }
             catch (Exception)
             {
-                return NotFound();
+                return null;
             }
         }
     }
