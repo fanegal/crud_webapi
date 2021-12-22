@@ -22,26 +22,14 @@ namespace crud_webapi.Controllers
             _authService = authService;
         }
 
+
+
         [AllowAnonymous]
         [HttpGet]
         public object Get()
         {
-            string responseObject;
-            B_Property neg;
-            try
-            {
-                neg = new B_Property();
-                neg.nuevo();
-                if (neg.bit_error) { throw neg.error; }
-                responseObject = "Insertado";
-            }
-            catch (Exception ex)
-            {
-                responseObject = ex.ToString();
-            }
-
-
-            _logger.LogInformation($"Status: {responseObject}");
+            var responseObject = new { Status = "Operando OK" };
+            _logger.LogInformation($"Status: {responseObject.Status}");
 
             return responseObject;
         }
@@ -61,6 +49,6 @@ namespace crud_webapi.Controllers
         }
 
 
-        
+
     }
 }

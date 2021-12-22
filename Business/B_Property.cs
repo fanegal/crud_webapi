@@ -13,16 +13,16 @@ namespace Business
         private data_access.Property data;
         public bool bit_error;
         public Exception error;
+        public int ultimo_id;
         public B_Property()
         {
             data = new data_access.Property();
         }
-        public void nuevo()
+        public void nuevo(entidades.Property obj)
         {
-            entidades.Property obj;
             try
             {
-                obj = new entidades.Property();
+
                 var indice = data.getAll().Count;
                 if (indice > 0)
                 {
@@ -32,15 +32,14 @@ namespace Business
                 {
                     obj.Id = 1;
                 }
-                obj.Address = "";
+
                 obj.CreatedAt = DateTime.Now;
-                obj.Description = "";
-                obj.Status = "";
-                obj.Title = "";
+                obj.Status = "Activo";
                 obj.UpdatedAt = obj.CreatedAt;
 
                 data.sumit(obj);
                 if (data.bit_error) { throw data.Error; }
+                ultimo_id = obj.Id;
             }
             catch (Exception ex)
             {
