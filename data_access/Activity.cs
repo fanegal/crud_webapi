@@ -34,120 +34,127 @@ namespace data_access
             return List_result;
         }
 
-        public IEnumerable<Object> getListEspecial_regla()
+        public IEnumerable<lista> getListEspecial_regla()
         {
+            IEnumerable<lista> List_result;
             try
             {
-                var List_result = from t1 in entities.Activities
-                                  join t2 in entities.Surveys
-                                  on t1.Id equals t2.ActivityId
-                                  into temp
-                                  from t2 in temp.DefaultIfEmpty()
-                                  where t1.Schedule <= DateTime.Now.AddDays(14) && t1.Schedule >= DateTime.Now.AddDays(-3)
-                                  select new
+                List_result = from t1 in entities.Activities
+                              join t2 in entities.Surveys
+                              on t1.Id equals t2.ActivityId
+                              into temp
+                              from t2 in temp.DefaultIfEmpty()
+                              where t1.Schedule <= DateTime.Now.AddDays(14) && t1.Schedule >= DateTime.Now.AddDays(-3)
+                              select new lista
+                              {
+                                  ID = t1.Id,
+                                  schedule = t1.Schedule,
+                                  title = t1.Title,
+                                  created_at = t1.CreatedAt,
+                                  status = t1.Status,
+                                  condition = t1.Status == "active" && t1.Schedule >= DateTime.Now ? "Pendiente a realizar"
+                                                : t1.Status == "active" && t1.Schedule < DateTime.Now ? "Atrasada"
+                                                : t1.Status == "done" ? "Finalizada" : "",
+                                  property = new propiedad
                                   {
-                                      ID = t1.Id,
-                                      schedule = t1.Schedule,
-                                      title = t1.Title,
-                                      created_at = t1.CreatedAt,
-                                      status = t1.Status,
-                                      condition = t1.Status == "active" && t1.Schedule >= DateTime.Now ? "Pendiente a realizar"
-                                                    : t1.Status == "active" && t1.Schedule < DateTime.Now ? "Atrasada"
-                                                    : t1.Status == "done" ? "Finalizada" : "",
-                                      property = new
-                                      {
-                                          id = t1.Property.Id,
-                                          title = t1.Property.Title,
-                                          address = t1.Property.Address
-                                      },
-                                      survey = t2.Id
-                                  };
-                return List_result.ToList();
+                                      id = t1.Property.Id,
+                                      title = t1.Property.Title,
+                                      address = t1.Property.Address
+                                  },
+                                  survey = t2.Id.ToString()
+                              };
+                return List_result;
 
             }
             catch (Exception ex)
             {
                 bit_error = true;
                 Error = ex;
-                return null;
+                List_result = new List<lista>();
+                return List_result;
             }
         }
 
-        public IEnumerable<Object> getListEspecial_status(string estatus)
+        public IEnumerable<lista> getListEspecial_status(string estatus)
         {
+            IEnumerable<lista> List_result;
             try
             {
-                var List_result = from t1 in entities.Activities
-                                  join t2 in entities.Surveys
-                                  on t1.Id equals t2.ActivityId
-                                  into temp
-                                  from t2 in temp.DefaultIfEmpty()
-                                  where t1.Status.ToLower().Equals(estatus.ToLower())
-                                  select new
+                List_result = from t1 in entities.Activities
+                              join t2 in entities.Surveys
+                              on t1.Id equals t2.ActivityId
+                              into temp
+                              from t2 in temp.DefaultIfEmpty()
+                              where t1.Status.ToLower().Equals(estatus.ToLower())
+                              select new lista
+                              {
+                                  ID = t1.Id,
+                                  schedule = t1.Schedule,
+                                  title = t1.Title,
+                                  created_at = t1.CreatedAt,
+                                  status = t1.Status,
+                                  condition = t1.Status == "active" && t1.Schedule >= DateTime.Now ? "Pendiente a realizar"
+                                                 : t1.Status == "active" && t1.Schedule < DateTime.Now ? "Atrasada"
+                                                 : t1.Status == "done" ? "Finalizada" : "",
+                                  property = new propiedad
                                   {
-                                      ID = t1.Id,
-                                      schedule = t1.Schedule,
-                                      title = t1.Title,
-                                      created_at = t1.CreatedAt,
-                                      status = t1.Status,
-                                      condition = t1.Status == "active" && t1.Schedule >= DateTime.Now ? "Pendiente a realizar"
-                                                    : t1.Status == "active" && t1.Schedule < DateTime.Now ? "Atrasada"
-                                                    : t1.Status == "done" ? "Finalizada" : "",
-                                      property = new
-                                      {
-                                          id = t1.Property.Id,
-                                          title = t1.Property.Title,
-                                          address = t1.Property.Address
-                                      },
-                                      survey = (int?)t2.Id
-                                  };
-                return List_result.ToList();
+                                      id = t1.Property.Id,
+                                      title = t1.Property.Title,
+                                      address = t1.Property.Address
+                                  },
+                                  survey = t2.Id.ToString()
+                              };
+
+                return List_result;
 
             }
             catch (Exception ex)
             {
                 bit_error = true;
                 Error = ex;
-                return null;
+                List_result = new List<lista>();
+                return List_result;
             }
         }
 
-        public IEnumerable<Object> getListEspecial_fechas(DateTime inicio, DateTime fin)
+        public IEnumerable<lista> getListEspecial_fechas(DateTime inicio, DateTime fin)
         {
+            IEnumerable<lista> List_result;
             try
             {
-                var List_result = from t1 in entities.Activities
-                                  join t2 in entities.Surveys
-                                  on t1.Id equals t2.ActivityId
-                                  into temp
-                                  from t2 in temp.DefaultIfEmpty()
-                                  where t1.Schedule <= fin && t1.Schedule >= inicio
-                                  select new
+                List_result = from t1 in entities.Activities
+                              join t2 in entities.Surveys
+                              on t1.Id equals t2.ActivityId
+                              into temp
+                              from t2 in temp.DefaultIfEmpty()
+                              where t1.Schedule <= fin && t1.Schedule >= inicio
+                              select new lista
+                              {
+                                  ID = t1.Id,
+                                  schedule = t1.Schedule,
+                                  title = t1.Title,
+                                  created_at = t1.CreatedAt,
+                                  status = t1.Status,
+                                  condition = t1.Status == "active" && t1.Schedule >= DateTime.Now ? "Pendiente a realizar"
+                                                  : t1.Status == "active" && t1.Schedule < DateTime.Now ? "Atrasada"
+                                                  : t1.Status == "done" ? "Finalizada" : "",
+                                  property = new propiedad
                                   {
-                                      ID = t1.Id,
-                                      schedule = t1.Schedule,
-                                      title = t1.Title,
-                                      created_at = t1.CreatedAt,
-                                      status = t1.Status,
-                                      condition = t1.Status == "active" && t1.Schedule >= DateTime.Now ? "Pendiente a realizar"
-                                                    : t1.Status == "active" && t1.Schedule < DateTime.Now ? "Atrasada"
-                                                    : t1.Status == "done" ? "Finalizada" : "",
-                                      property = new
-                                      {
-                                          id = t1.Property.Id,
-                                          title = t1.Property.Title,
-                                          address = t1.Property.Address
-                                      },
-                                      survey = t2.Id
-                                  };
-                return List_result.ToList();
+                                      id = t1.Property.Id,
+                                      title = t1.Property.Title,
+                                      address = t1.Property.Address
+                                  },
+                                  survey = t2.Id.ToString()
+                              };
+                return List_result;
 
             }
             catch (Exception ex)
             {
                 bit_error = true;
                 Error = ex;
-                return null;
+                List_result = new List<lista>();
+                return List_result;
             }
         }
         public List<entidades.Activity> getList(System.Linq.Expressions.Expression<Func<entidades.Activity, bool>> condicion)
@@ -218,5 +225,25 @@ namespace data_access
 
         }
 
+    }
+
+
+    public class lista
+    {
+        public int ID { get; set; }
+        public DateTime schedule { get; set; }
+        public string title { get; set; }
+        public DateTime created_at { get; set; }
+        public string status { get; set; }
+        public string condition { get; set; }
+        public propiedad property { get; set; }
+        public string survey { get; set; }
+    }
+
+    public class propiedad
+    {
+        public int id { get; set; }
+        public string title { get; set; }
+        public string address { get; set; }
     }
 }

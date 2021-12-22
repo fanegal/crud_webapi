@@ -1,4 +1,5 @@
-﻿using System;
+﻿using data_access;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -116,9 +117,9 @@ namespace Business
 
         }
 
-        public IEnumerable<object> GetList(bool regla, string status, DateTime? inicio, DateTime? fin)
+        public IEnumerable<lista> GetList(bool regla, string status, DateTime? inicio, DateTime? fin)
         {
-            List<object> result;
+            List<lista> result;
             try
             {
                 if (regla)
@@ -140,7 +141,7 @@ namespace Business
             {
                 bit_error = true;
                 error = ex;
-                result = new List<object>();
+                result = new List<lista>();
             }
             return result;
         }

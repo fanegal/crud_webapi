@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Business;
 using crud_webapi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -131,7 +132,12 @@ namespace crud_webapi.Controllers
             try
             {
                 neg = new B_Activity();
-                var datos = neg.GetList(filtros.regla, filtros.status, filtros.fechainicio_calendario, filtros.fechafin_calendario);
+                List<data_access.lista> datos = neg.GetList(filtros.regla, filtros.status, filtros.fechainicio_calendario, filtros.fechafin_calendario).ToList();
+
+                datos.ForEach(s => {
+                    s.survey = "/api/Encuestas/" + s.survey;
+             
+                });
 
                 return datos;
             }
