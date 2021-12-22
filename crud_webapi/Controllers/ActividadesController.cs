@@ -39,7 +39,7 @@ namespace crud_webapi.Controllers
                     else
                     {
                         result.bit_error = false;
-                        result.mensaje = "nueva_actividad registrada";
+                        result.mensaje = string.Format("{0} su id es:{1}", "nueva actividad registrada ", neg.ultimo_id);
 
                     }
                 }
@@ -134,9 +134,10 @@ namespace crud_webapi.Controllers
                 neg = new B_Activity();
                 List<data_access.lista> datos = neg.GetList(filtros.regla, filtros.status, filtros.fechainicio_calendario, filtros.fechafin_calendario).ToList();
 
-                datos.ForEach(s => {
+                datos.ForEach(s =>
+                {
                     s.survey = "/api/Encuestas/" + s.survey;
-             
+
                 });
 
                 return datos;

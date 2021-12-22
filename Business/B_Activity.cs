@@ -12,6 +12,7 @@ namespace Business
         private data_access.Activity data;
         public bool bit_error;
         public Exception error;
+        public int ultimo_id;
         public B_Activity()
         {
             data = new data_access.Activity();
@@ -48,6 +49,7 @@ namespace Business
 
                         data.sumit(actividad);
                         if (data.bit_error) { throw data.Error; }
+                        ultimo_id = actividad.Id;
                     }
                     else
                     {
